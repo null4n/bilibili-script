@@ -1,10 +1,11 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 function_help() {
-    echo "bilibili.sh -i [input dir] -t [custom title] -d [dir]"
+    echo "bilibili.sh -i [input dir] -t [custom title] -d [dir] [-rm]"
     echo -e "-i  -  example -> /sdcard/Android/data/com.bilibili.app/download/xxxxxxxx (Required)\n"
     echo -e "-t  -  use custom title (empty to read from entry.json) (Optional)\n"
     echo -e "-d  -  output dir (Optional)\n"
+    echo -e "-rm  -  remove all downloaded files after complete\n"
     exit 0
 }
 
@@ -34,6 +35,11 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             ;;
+        -rm)
+            rm=true
+            shift
+            shift
+            ;;
         *)
             POSITIONAL+=("$1")
             shift
@@ -49,6 +55,11 @@ if [ -n "$dir" ]; then
     mkdir -p "$dir"
 else
     dir="$input"
+fi
+
+if [ "$dir" = "$input" ] && [ $rm ]; then
+    echo -e "Can't use -rm while output is empty."
+    exit 1
 fi
 
 cd "$input"
@@ -97,5 +108,9 @@ for n in $(find -maxdepth 1 -type d|grep '[0-9]'); do
         ffmpeg -i video.m4s -i audio.m4s -c copy -map 0:v -map 1:a -y "${dir}/${fname}.mp4" > /dev/null 2>&1
     fi
     cd $pw
+    if [ $rm ]; then
+        echo -e "Removing downloaded files..."
+        rm -rf "$input"
+    fi
     echo -e "Done.\n"
 done

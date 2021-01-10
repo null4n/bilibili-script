@@ -18,7 +18,7 @@
 >chmod 755 $HOME/../usr/bin/bilibili
 
 ## Usage
-bilibili -i [input dir] -t [custom title] -d [output dir]
+bilibili -i [input dir] -t [custom title] -d [output dir] [-rm]
 源路徑是必須的，只到番號，如
 >/sdcard/Android/data/com.bilibili.app/download/123456789
 
@@ -26,6 +26,10 @@ title是自定義標題（文件名），不用此參數自動從entry.json裏�
 
 輸出路徑爲空直接輸出到源路徑
 
+使用rm參數完成後刪除已下載文件
+
 > - 同一個番號裏有多個P的自動處理 
 > - 動漫番多個劇集自動處理
 > - 支持舊版.blv和新版.m4s格式
+
+
